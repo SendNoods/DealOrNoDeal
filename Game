@@ -1,0 +1,99 @@
+// DealOrNoDeal.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <algorithm>
+#include <array>
+#include <chrono>
+#include <iostream>
+#include <random>
+#include <string>
+#include <windows.h>
+
+void Spacer(){
+std::cout << "====================================================================\n";
+}
+
+void BankerOffer(){
+
+}
+void Main(){
+	int PlayerCase, Eliminate, PlayerCaseValue = -1, count = 6, o = 0, sum = 0, size, avg;
+	std::array<int,26> briefcases = {1,5,10,25,50,75,100,200,300,400,500,750,1000,2500,5000,10000,25000,50000,75000,100000,200000,300000,400000,500000,750000,1000000};
+	size = sizeof(briefcases) / sizeof(briefcases[26]);
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	shuffle (briefcases.begin(), briefcases.end(), std::default_random_engine(seed));
+	for(int i = 0; i < 26; i++){
+		if(briefcases[i] != -1){
+			std::cout << " [ " << i+1 << " ] ";
+		}
+	};
+	std::cout << "Please select your case\n :";
+	std::cin >> PlayerCase;
+	std::cout << "\nYou selected case: " << PlayerCase;
+	PlayerCaseValue = briefcases[PlayerCase-1];
+	briefcases[PlayerCase-1] = -1;
+	std::cout << "\nPlease pick cases to eliminate:\n";
+	do{
+	o++;
+	std::cout << ": ";
+	std::cin >> Eliminate;
+		if(briefcases[Eliminate-1] == -1){
+			o--;
+			std::cout << "\nYou cannot remove that case, pick another\n";
+		}else if(briefcases[Eliminate-1] > 26 && briefcases[Eliminate-1] < 0){
+			o--;
+			std::cout << "\nThat case doesn't exsist\n";
+		}else{
+			std::cout << "Briefcase " << Eliminate << " Value was. . .  $" << briefcases[Eliminate-1] << "\n";
+			briefcases[Eliminate-1] = -1;
+		}
+	}while(o < count);
+	count--;
+	if(count < 1){
+	count = 1;
+	}
+	Spacer();
+	std::cout << "The banker is calling. . .";
+	for(int p = 0; p < size; p++){
+		if(briefcases[size] != -1){
+			sum += briefcases[size];
+		}
+	}
+	avg = sum / size;
+	std::cout << "\n\nThe Banker has offered you: $" << avg;
+	system("PAUSE");
+}
+void DealOrNoDeal(){
+
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+
+{
+	int Play;
+	char Name[20];
+
+	std::cout << "#######################################\n";
+	std::cout << "#######################################\n";
+	std::cout << "######        Welcome to         ######\n";
+	std::cout << "######      Deal or No Deal      ######\n";
+	std::cout << "#######################################\n";
+	std::cout << "#######################################\n";
+	do{
+	std::cout << "Would you like to play? (Yes = 1/No = 0)\n : ";
+	std::cin >> Play;
+	if (Play == 1){
+		std::cout << "Welcome to Deal or No Deal!\n";
+		std::cout << "What is your name?\n : ";
+		std::cin >> Name;
+		std::cout << "\nWelcome " << Name;
+		std::cout << ", lets get the game started\n";
+		Main();
+	}else if(Play == 0){
+		return 0;
+	}else{
+	} 
+	}while(Play != 1);
+	
+}
